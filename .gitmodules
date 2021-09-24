@@ -7,3 +7,6 @@
 [submodule "modules/Vision"]
 	path = modules/Vision
 	url = https://github.com/DeepTaskHY/Vision
+[submodule "modules/Speech"]
+	path = modules/Speech
+	url = https://github.com/DeepTaskHY/Speech
