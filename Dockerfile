@@ -18,6 +18,8 @@ WORKDIR /workspace
 ADD requirements.txt requirements-tm.txt
 ADD modules/DM_Generator/requirements.txt requirements-dm.txt
 ADD modules/KM/requirements.txt requirements-km.txt
+ADD modules/Vision/requirements.txt requirements-vision.txt
+ADD modules/Speech/requirements.txt requirements-speech.txt
 RUN ls requirements-*.txt | xargs paste -sd'\n' > requirements.txt
 RUN pip install -r requirements.txt
 
