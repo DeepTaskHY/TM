@@ -1,4 +1,6 @@
+pyasn1-modules==0.2.8
 simple-websocket==0.3.0
 roslibpy==1.2.1
 flask-socketio==5.1.1
 Flask-Moment==1.0.2
+https://github.com/DeepTaskHY/ROS/archive/main.zip
