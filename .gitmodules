@@ -4,3 +4,6 @@
 [submodule "modules/KM"]
 	path = modules/KM
 	url = https://github.com/DeepTaskHY/KM_python
+[submodule "modules/Vision"]
+	path = modules/Vision
+	url = https://github.com/DeepTaskHY/Vision
