@@ -12,4 +12,7 @@ services:
         volumes:
             - ./src:/workspace/src/tm/src
             - ./modules/DM_Generator/src:/workspace/src/dm_generator/src
+            - ./modules/KM/src:/workspace/src/km/src
+            - ./modules/Vision/src:/workspace/src/vision/src
+            - ./modules/Speech/src:/workspace/src/speech/src
             - /tmp/.X11-unix:/tmp/.X11-unix

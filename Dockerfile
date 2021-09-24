@@ -4,7 +4,7 @@ FROM ros:noetic
 ENV DEBIAN_FRONTEND noninteractive
 
 # Update repo packages
-RUN apt-get update && \
+RUN apt-get update --fix-missing && \
     apt-get upgrade -y
 
 # Install python
@@ -22,12 +22,11 @@ RUN ls requirements-*.txt | xargs paste -sd'\n' > requirements.txt
 RUN pip install -r requirements.txt
 
 # Install ROS bridge for WebSocket
-RUN apt-get update --fix-missing && \
-    apt-get install -y ros-noetic-rosbridge-suite
+RUN apt-get install -y ros-noetic-rosbridge-suite
 
 # Setup ROS environment
 RUN rosdep update
 ADD docker-entrypoint.sh .
 RUN chmod +x docker-entrypoint.sh
 ENTRYPOINT ["/workspace/docker-entrypoint.sh"]
-CMD ["roslaunch", "src/tm/src/launch/tm.launch"]
+CMD ["roslaunch", "tm", "tm.launch"]
