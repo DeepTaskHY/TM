@@ -23,15 +23,10 @@ namespace = RosBridgeNamespace(host=ros_configuration['host'],
 sio.on_namespace(namespace)
 
 
-@app.route('/scenarios/', defaults={'scenario_name': 'homecare'})
-@app.route('/scenarios/<scenario_name>')
+@app.route('/')
 def index(scenario_name: str):
-    # scenario = ScenarioParser(scenario_name).get_scenario()
-    # intent_names = scenario.get_intent_names()
-
     args = {
         'scenario_name': scenario_name,
-        # 'intent_names': intent_names,
         'intent_names': [],
         'timestamp': timestamp()
     }

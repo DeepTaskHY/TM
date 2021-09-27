@@ -24,12 +24,7 @@
 
             <div class="col mb-3">
                 <div class="form-floating">
-                    <select class="form-select" name="intent" id="intent" required>
-                        <option value="" selected>Select...</option>
-                        {% for intent_name in intent_names %}
-                            <option value="{{ intent_name }}">{{ intent_name }}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" class="form-control" name="intent" id="intent" required/>
                     <label for="intent">Intent</label>
                 </div>
             </div>
