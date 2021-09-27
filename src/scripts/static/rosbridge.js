@@ -113,6 +113,36 @@ $(document).ready(() => {
     })
 
     recognitionNamespace.on('image_raw', (data) => {
-        console.log(data)
+        const can = $('#face')[0]
+        can.width = data.width
+        can.height = data.height
+        const ctx = can.getContext('2d')
+
+        const imgData = ctx.createImageData(data.width, data.height)
+        const inData = atob(data.data)
+        const rawData = data.data
+
+        var i = 4, j = 0
+
+        while (j < inData.length) {
+            const w1 = inData.charCodeAt(j++)
+            const w2 = inData.charCodeAt(j++)
+            const w3 = inData.charCodeAt(j++)
+
+            if (!imgMes.is_bigendian) {
+                rawData[i++] = w3 // blue
+                rawData[i++] = w2 // green
+                rawData[i++] = w1 // red
+            }
+            else {
+                rawData[i++] = (w1 >> 8) + ((w1 & 0xFF) << 8)
+                rawData[i++] = (w2 >> 8) + ((w2 & 0xFF) << 8)
+                rawData[i++] = (w3 >> 8) + ((w3 & 0xFF) << 8)
+            }
+
+            rawData[i++] = 255  // alpha
+        }
+
+        ctx.putImageData(imgData, 0, 0)
     })
 })
