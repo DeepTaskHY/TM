@@ -74,9 +74,9 @@ $(document).ready(() => {
         return $dialog
     }
 
-    var sio = io('/rosbridge')
 
-    // Publish message
+    var dialogNamespace = io('/dialog')
+
     $('#input-form').on('submit', (e) => {
         e.preventDefault()
 
@@ -91,12 +91,11 @@ $(document).ready(() => {
         }
 
         // Publish
-        sio.emit('publish', {'data': JSON.stringify(message)})
+        dialogNamespace.emit('publish', {'data': JSON.stringify(message)})
         submitMessage(message, true)
     })
 
-    // Subscribe message
-    sio.on('subscribe', (data) => {
+    dialogNamespace.on('subscribe', (data) => {
         var message = JSON.parse(data['data'])
 
         // Print message
@@ -104,5 +103,16 @@ $(document).ready(() => {
 
         // Increase message ID
         $('#id').val((i, val) => { return ++val })
+    })
+
+
+    var recognitionNamespace = io('/recognition')
+
+    recognitionNamespace.on('face_id', (data) => {
+        console.log(data)
+    })
+
+    recognitionNamespace.on('image_raw', (data) => {
+        console.log(data)
     })
 })

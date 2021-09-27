@@ -11,7 +11,6 @@ class RosBridgeNamespace(Namespace):
         super(RosBridgeNamespace, self).__init__(*args, **kwargs)
         self.__ros_host = host
         self.__ros_port = port
-        self.register_subscribe()
 
     @property
     def ros(self):
@@ -21,19 +20,40 @@ class RosBridgeNamespace(Namespace):
 
         return self.__ros
 
+
+class DialogBridgeNamespace(RosBridgeNamespace):
+    def __init__(self, *args, **kwargs):
+        super(DialogBridgeNamespace, self).__init__(*args, **kwargs)
+        self.register_subscribe()
+
     def on_publish(self, data):
         publisher = Topic(self.ros, '/taskExecution', 'std_msgs/String')
         publisher.publish(Message(data))
 
     def register_subscribe(self):
         subscriber = Topic(self.ros, '/taskCompletion', 'std_msgs/String')
-        subscriber.subscribe(self.subscribe)
+        subscriber.subscribe(self.callback_subscribe)
 
-        subscriber_2 = Topic(self.ros, '/recognition/image_raw', 'sensor_msgs/Image')
-        subscriber_2.subscribe(self.test)
-
-    def subscribe(self, data):
+    def callback_subscribe(self, data):
         self.emit('subscribe', data)
 
-    def test(self, data):
-        print(data)
+
+class RecognitionBridgeNamespace(RosBridgeNamespace):
+    def __init__(self, *args, **kwargs):
+        super(RecognitionBridgeNamespace, self).__init__(*args, **kwargs)
+        self.register_face_id()
+        self.register_image_raw()
+
+    def register_face_id(self):
+        subscriber = Topic(self.ros, '/recognition/face_id', 'std_msgs/String')
+        subscriber.subscribe(self.callback_face_id)
+
+    def register_image_raw(self):
+        subscriber = Topic(self.ros, '/recognition/image_raw', 'sensor_msgs/Image')
+        subscriber.subscribe(self.callback_image_raw)
+
+    def callback_face_id(self, data):
+        self.emit('face_id', data)
+
+    def callback_image_raw(self, data):
+        self.emit('image_raw', data)
