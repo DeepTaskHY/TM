@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Update repo packages
 RUN apt-get update --fix-missing && \
+    apt-get install -y apt-utils && \
     apt-get upgrade -y
 
 # Install python
@@ -14,10 +15,27 @@ RUN pip install --upgrade pip && \
     pip install --upgrade setuptools
 
 # Install OS packages (for modules/Vision)
-RUN apt-get -y install libcairo2-dev \
-                       libgirepository1.0-dev
+RUN apt-get -y install libgirepository1.0-dev \
+                       libcairo2-dev
 
 # Install OS packages (for modules/Speech)
+RUN apt-get -y install libgstreamer1.0-dev \
+                       libgstreamer-plugins-base1.0-dev \
+                       libgstreamer-plugins-bad1.0-dev \
+                       gstreamer1.0-plugins-base \
+                       gstreamer1.0-plugins-good \
+                       gstreamer1.0-plugins-bad \
+                       gstreamer1.0-plugins-ugly \
+                       gstreamer1.0-libav \
+                       gstreamer1.0-doc \
+                       gstreamer1.0-tools \
+                       gstreamer1.0-x \
+                       gstreamer1.0-alsa \
+                       gstreamer1.0-gl \
+                       gstreamer1.0-gtk3 \
+                       gstreamer1.0-qt5 \
+                       gstreamer1.0-pulseaudio
+
 RUN apt-get -y install libsndfile1 \
                        libportaudio2
 
