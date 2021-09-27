@@ -13,7 +13,6 @@ services:
             - ./modules/KM/src:/workspace/src/km/src
             - ./modules/Vision/src:/workspace/src/vision/src
             - ./modules/Speech/src:/workspace/src/speech/src
-            - /tmp/.X11-unix:/tmp/.X11-unix
         devices:
             - /dev/video0:/dev/video0
             - /dev/snd:/dev/snd
