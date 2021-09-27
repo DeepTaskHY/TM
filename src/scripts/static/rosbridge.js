@@ -129,7 +129,7 @@ $(document).ready(() => {
             const w2 = inData.charCodeAt(j++)
             const w3 = inData.charCodeAt(j++)
 
-            if (!imgMes.is_bigendian) {
+            if (!data.is_bigendian) {
                 rawData[i++] = w3 // blue
                 rawData[i++] = w2 // green
                 rawData[i++] = w1 // red
