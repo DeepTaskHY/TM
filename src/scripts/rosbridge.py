@@ -29,5 +29,11 @@ class RosBridgeNamespace(Namespace):
         subscriber = Topic(self.ros, '/taskCompletion', 'std_msgs/String')
         subscriber.subscribe(self.subscribe)
 
+        subscriber_2 = Topic(self.ros, '/recognition/image_raw', 'sensor_msgs/Image')
+        subscriber_2.subscribe(self.test)
+
     def subscribe(self, data):
         self.emit('subscribe', data)
+
+    def test(self, data):
+        print(data)
