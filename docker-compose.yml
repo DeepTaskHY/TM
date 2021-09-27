@@ -7,6 +7,8 @@ services:
             dockerfile: Dockerfile
         container_name: container
         network_mode: host
+        environment:
+            - PYTHONUNBUFFERED=1
         volumes:
             - ./src:/workspace/src/tm/src
             - ./modules/DM_Generator/src:/workspace/src/dm_generator/src
