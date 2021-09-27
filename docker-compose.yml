@@ -17,3 +17,5 @@ services:
         devices:
             - /dev/video0:/dev/video0
             - /dev/snd:/dev/snd
+        environment:
+            - DISPLAY=:0
