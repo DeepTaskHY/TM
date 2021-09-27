@@ -26,10 +26,8 @@ sio.on_namespace(RecognitionBridgeNamespace(host=ros_configuration['host'],
 
 
 @app.route('/')
-def index(scenario_name: str):
+def index():
     args = {
-        'scenario_name': scenario_name,
-        'intent_names': [],
         'timestamp': timestamp()
     }
 
