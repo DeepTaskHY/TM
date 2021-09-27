@@ -2,6 +2,8 @@
 
 $(document).ready(() => {
     var submitMessage = (message = {}, mine = true) => {
+        console.log(message)
+
         var $wrap = $('#dialog-wrap')
 
         var $example = $wrap
@@ -106,13 +108,13 @@ $(document).ready(() => {
     })
 
 
-    var recognitionNamespace = io('/recognition')
+    var visionNamespace = io('/vision')
 
-    recognitionNamespace.on('face_id', (data) => {
+    visionNamespace.on('face_id', (data) => {
         console.log(data)
     })
 
-    recognitionNamespace.on('image_raw', (data) => {
+    visionNamespace.on('image_raw', (data) => {
         const can = $('#face')[0]
         can.width = data.width
         can.height = data.height
@@ -144,5 +146,28 @@ $(document).ready(() => {
         }
 
         ctx.putImageData(imgData, 0, 0)
+    })
+
+
+    var speechNamespace = io('/speech')
+
+    $('#recorder-on').on('click', () => {
+        speechNamespace.emit('record', {data: true})
+    })
+
+    $('#recorder-off').on('click', () => {
+        speechNamespace.emit('record', {data: false})
+    })
+
+    speechNamespace.on('stt', (data) => {
+        var message = JSON.parse(data['data'])
+        var header = message['header']
+        var contentName = header['content']
+        var content = message[contentName]
+        var human_speech = content['stt']
+
+        console.log(message)
+
+        $('#human_speech').val(human_speech)
     })
 })

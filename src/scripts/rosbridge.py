@@ -1,8 +1,9 @@
+from abc import *
 from flask_socketio import Namespace
 from roslibpy import Ros, Topic, Message
 
 
-class RosBridgeNamespace(Namespace):
+class RosBridgeNamespace(Namespace, metaclass=ABCMeta):
     __ros: Ros = None
     __ros_host: str = None
     __ros_port: int = None
@@ -38,9 +39,9 @@ class DialogBridgeNamespace(RosBridgeNamespace):
         self.emit('subscribe', data)
 
 
-class RecognitionBridgeNamespace(RosBridgeNamespace):
+class VisionBridgeNamespace(RosBridgeNamespace):
     def __init__(self, *args, **kwargs):
-        super(RecognitionBridgeNamespace, self).__init__(*args, **kwargs)
+        super(VisionBridgeNamespace, self).__init__(*args, **kwargs)
         self.register_face_id()
         self.register_image_raw()
 
@@ -57,3 +58,20 @@ class RecognitionBridgeNamespace(RosBridgeNamespace):
 
     def callback_image_raw(self, data):
         self.emit('image_raw', data)
+
+
+class SpeechBridgeNamespace(RosBridgeNamespace):
+    def __init__(self, *args, **kwargs):
+        super(SpeechBridgeNamespace, self).__init__(*args, **kwargs)
+        self.register_stt()
+
+    def on_record(self, data):
+        publisher = Topic(self.ros, '/action/recorder_on', 'std_msgs/Bool')
+        publisher.publish(Message(data))
+
+    def register_stt(self):
+        subscriber = Topic(self.ros, '/recognition/speech', 'std_msgs/String')
+        subscriber.subscribe(self.callback_stt)
+
+    def callback_stt(self, data):
+        self.emit('stt', data)

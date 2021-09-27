@@ -4,7 +4,7 @@ import sys
 from os import path
 from flask_socketio import SocketIO
 from flask import Flask, render_template
-from rosbridge import DialogBridgeNamespace, RecognitionBridgeNamespace
+from rosbridge import DialogBridgeNamespace, VisionBridgeNamespace, SpeechBridgeNamespace
 from dtroslib.helpers import get_test_configuration, timestamp
 
 
@@ -20,9 +20,13 @@ sio.on_namespace(DialogBridgeNamespace(host=ros_configuration['host'],
                                        port=ros_configuration['port'],
                                        namespace='/dialog'))
 
-sio.on_namespace(RecognitionBridgeNamespace(host=ros_configuration['host'],
-                                            port=ros_configuration['port'],
-                                            namespace='/recognition'))
+sio.on_namespace(VisionBridgeNamespace(host=ros_configuration['host'],
+                                       port=ros_configuration['port'],
+                                       namespace='/vision'))
+
+sio.on_namespace(SpeechBridgeNamespace(host=ros_configuration['host'],
+                                       port=ros_configuration['port'],
+                                       namespace='/speech'))
 
 
 @app.route('/')
@@ -37,5 +41,4 @@ def index():
 if __name__ == '__main__':
     sio.run(app=app,
             host=flask_configuration['host'],
-            port=flask_configuration['port'],
-            debug=True)
+            port=flask_configuration['port'])
