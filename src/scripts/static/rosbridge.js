@@ -120,7 +120,7 @@ $(document).ready(() => {
 
         const imgData = ctx.createImageData(data.width, data.height)
         const inData = atob(data.data)
-        const rawData = data.data
+        const rawData = imgData.data
 
         var i = 4, j = 0
 
