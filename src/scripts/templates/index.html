@@ -165,9 +165,11 @@
         </form>
 
         <!-- Output Layout -->
-        <div class="col bg-light border border-secondary rounded-3 overflow-auto" style="height: 500px" id="dialog-wrap">
-            <div class="d-grid">
-                <div class="p-2 visually-hidden dialog dialog-example">
+        <div class="col">
+            <canvas class="container-fluid rounded bg-secondary" style="min-height: 300px" id="face"></canvas>
+
+            <div class="bg-light border border-secondary rounded-3 overflow-auto" style="height: 400px" id="dialog-wrap">
+                <div class="visually-hidden dialog dialog-example">
                     <p class="d-flex dialog-output">
                         <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#dialog-detail" aria-expanded="false" aria-controls="dialog-detail"></button>
                     </p>
@@ -177,8 +179,6 @@
                 </div>
             </div>
         </div>
-
-        <canvas id="face"/>
     </div>
 </body>
 </html>
