@@ -13,6 +13,14 @@ RUN apt-get install -y python3-pip
 RUN pip install --upgrade pip && \
     pip install --upgrade setuptools
 
+# Install OS packages (for modules/Vision)
+RUN apt-get -y install libcairo2-dev \
+                       libgirepository1.0-dev
+
+# Install OS packages (for modules/Speech)
+RUN apt-get -y install libsndfile1 \
+                       libportaudio2
+
 # Install require dependencies
 WORKDIR /workspace
 ADD requirements.txt requirements-tm.txt
@@ -23,8 +31,11 @@ ADD modules/Speech/requirements.txt requirements-speech.txt
 RUN ls requirements-*.txt | xargs paste -sd'\n' > requirements.txt
 RUN pip install -r requirements.txt
 
-# Install ROS bridge for WebSocket
+# Install ROS packages (for ROS WebSocket)
 RUN apt-get install -y ros-noetic-rosbridge-suite
+
+# Install ROS packages (for modules/Vision)
+RUN apt-get install -y ros-$(rosversion -d)-cv-bridge
 
 # Setup ROS environment
 RUN rosdep update
