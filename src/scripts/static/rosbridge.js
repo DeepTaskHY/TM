@@ -111,7 +111,12 @@ $(document).ready(() => {
     var visionNamespace = io('/vision')
 
     visionNamespace.on('face_id', (data) => {
-        console.log(data)
+        var message = JSON.parse(data['data'])
+        var header = message['header']
+        var contentName = header['content']
+        var content = message[contentName]
+
+        console.log(message)
     })
 
     visionNamespace.on('image_raw', (data) => {

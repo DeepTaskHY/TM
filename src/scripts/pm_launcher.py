@@ -6,81 +6,70 @@ import threading
 import time
 from dtroslib.ros import NodeBase
 from std_msgs.msg import String
+from dtroslib.helpers import get_package_path
+
+test_path = get_package_path('tm')
+# test_path = '..'
+
+_human_speech: str
+_intent: str
+
+_sc: dict
+_sc_ready: bool = False
+_dialog_exec_done = True
 
 
-_human_speech: str = ''
-_robot_speech: str = ''
-_speech_1: bool = False
-_vision_1: bool = False
-_face_id: int
-_timepoint: float
-_name: str
-_social_context: dict
+def callback_vision(message):
+    received_message = json.loads(message.data)
+    # rospy.loginfo('Received message: \n{}'.format(json.dumps(message, ensure_ascii=False, indent="\t")))
 
-_km_id = 0
+    header = received_message['header']
+
+    f_id = received_message['face_recognition']['face_id']
+    t_point = received_message['face_recognition']['timestamp']
+    
+    json_file = test_path+'/json-example/2-p-k.json'
+    msg = json.load(open(json_file, 'r'))
+    msg['knowledge_query']['data'][0]['face_id'] = f_id
+    msg['knowledge_query']['data'][0]['timestamp'] = t_point
+
+    pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
+    rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
+
+    return
 
 
 def callback_speech(message):
-    global _speech_1, _human_speech
+    global _intent
 
     received_message = json.loads(message.data)
-    rospy.loginfo('Received message: \n{}'.format(json.dumps(message, ensure_ascii=False, indent="\t")))
+    # print(received_message)
+    # rospy.loginfo('Received message: \n{}'.format(json.dumps(message, ensure_ascii=False, indent="\t")))
 
     header = received_message['header']
     _human_speech = received_message['human_speech']['stt']
 
-    if header['id'] == 1:
-        t = threading.Thread(target=scenario_1)
-        t.start()
+    if '머리' in _human_speech or '아프' in _human_speech:
+        _dialog_exec_done = False
+        _intent = 'medical_reception'
+        
 
-        _speech_1 = True
-
-        return
-
-    if header['id'] == 2:
-
-        if '약' in _human_speech and '먹' in _human_speech:
-            json_file = '../json-example/7-p-k.json'
-            msg = json.load(open(json_file, 'r'))
-
-            pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
-            rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
-
-        return
-
-    if header['id'] == 3:
-        json_file = '../json-example/10-p-d.json'
+    if '약' in _human_speech and '먹' in _human_speech:
+        json_file = test_path+'/json-example/7-p-k.json'
         msg = json.load(open(json_file, 'r'))
-        msg['dialog_generation']['human_speech'] = _human_speech
-        msg['dialog_generation']['social_context'] = _social_context
 
         pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
         rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
-        return
+
+    if '아까' in _human_speech and '약' in _human_speech and '아직도' in _human_speech:
+        _dialog_exec_done = False
+        _intent = 'medical_reception'
 
     return
-
-
-def callback_vision(message):
-    global _vision_1, _face_id, _timepoint
-    received_message = json.loads(message.data)
-    rospy.loginfo('Received message: \n{}'.format(json.dumps(message, ensure_ascii=False, indent="\t")))
-
-    header = received_message['header']
-
-    if header['id'] > 1:
-        _face_id = received_message['face_recognition']['face_id']
-        _timepoint = received_message['face_recognition']['timestamp']
-
-        _vision_1 = True
-        return
-
-    return
-
 
 def callback_task(message):
-    global _km_id, _dm_id, _name, _social_context, _human_speech, _robot_speech
-
+    global _human_speech, _sc
+    
     received_message = json.loads(message.data)
     header = received_message['header']
     source = header['source']
@@ -91,23 +80,13 @@ def callback_task(message):
     rospy.loginfo('Received message: \n{}'.format(json.dumps(message, ensure_ascii=False, indent="\t")))
 
     if source == 'knowledge':
-        _km_id = header['id']
-        if _km_id == 1:
-            _social_context = received_message['knowledge_query']['data']['social_context']
-            _name = _social_context['name']
-
-            json_file = '../json-example/4-p-d.json'
-            msg = json.load(open(json_file, 'r'))
-            msg['dialog_generation']['human_speech'] = _human_speech
-            msg['dialog_generation']['social_context'] = _social_context
-
-            pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
-            rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
-
-            return
+        if 'knowledge_query' in header['content']:
+            if received_message['knowledge_query']['type'] == 'face_recognition':
+                _sc = received_message['knowledge_query']['data']['social_context']
+                _sc_ready = True   
 
     if source == 'dialog':
-        _dm_id = header['id']
+        dm_id = header['id']
 
         content_key = received_message['header']['content'][0]
         _robot_speech = received_message[content_key]['dialog']
@@ -124,31 +103,26 @@ def callback_task(message):
 
     return
 
-
-def scenario_1():
-    global _speech_1, _vision_1
-
+def dialog_exec():
+    global _intent, _human_speech, _sc_ready, _dialog_exec_done
+    
     while True:
-        if _speech_1 and _vision_1:
-            t = threading.Thread(target=scenario_2)
-            t.start()
-            _speech_1 = False
-            break
+        if not _dialog_exec_done:
+
+            if _sc_ready and _intent == 'medical_reception':
+                json_file = test_path+'/json-example/4-p-d.json'
+                msg = json.load(open(json_file, 'r'))
+                msg['dialog_generation']['intent'] = _intent
+                msg['dialog_generation']['human_speech'] = _human_speech
+                msg['dialog_generation']['social_context'] = _sc
+
+                pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
+                rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
+                
+                _dialog_exec_done = True
+
         else:
             time.sleep(0.1)
-
-    return
-
-
-def scenario_2():
-    global _face_id, _timepoint
-    json_file = '../json-example/2-p-k.json'
-    msg = json.load(open(json_file, 'r'))
-    msg['knowledge_query']['data']['face_id'] = _face_id
-    msg['knowledge_query']['data']['timestamp'] = _timepoint
-
-    pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
-    rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
 
     return
 
@@ -174,7 +148,10 @@ if __name__ == '__main__':
     pm_node.add_publisher("/taskExecution", String, queue_size=10)
     pm_node.add_publisher("/action/speech", String, queue_size=10)
     pm_node.add_subscriber("/recognition/speech", String, callback_speech)
-    pm_node.add_subscriber("/recognition/face", String, callback_vision)
+    pm_node.add_subscriber("/recognition/face_id", String, callback_vision)
     pm_node.add_subscriber("/taskCompletion", String, callback_task)
 
+    t = threading.Thread(target=dialog_exec)
+    t.start()
+    rospy.loginfo('Start PM')
     pm_node.spin()
