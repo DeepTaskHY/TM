@@ -1,28 +1,28 @@
 'use strict'
 
 $(document).ready(() => {
-    var submitMessage = (message = {}, mine = true) => {
+    const printDialog = (message = {}, mine = true) => {
         console.log(message)
 
-        var $wrap = $('#dialog-wrap')
+        const $wrap = $('#dialog-wrap')
 
-        var $example = $wrap
+        const $example = $wrap
             .find('.dialog-example')
 
-        var $dialog = $example.clone()
+        const $dialog = $example.clone()
             .removeClass('dialog-example visually-hidden')
             .appendTo($wrap)
 
-        var $dialogOutputWrap = $dialog
+        const $dialogOutputWrap = $dialog
             .children('.dialog-output')
 
-        var $dialogOutput = $dialogOutputWrap
+        const $dialogOutput = $dialogOutputWrap
             .children('button')
 
-        var $dialogDetailWrap = $dialog
+        const $dialogDetailWrap = $dialog
             .children('.dialog-detail')
 
-        var $dialogDetail = $dialogDetailWrap
+        const $dialogDetail = $dialogDetailWrap
             .children('.card')
 
         // Set class style
@@ -42,9 +42,9 @@ $(document).ready(() => {
         }
 
         // Set dialog detail ID
-        var id = $wrap.children('.dialog').length - 1
-        var detailName = $dialogOutput.attr('aria-controls')
-        var detailId = `${detailName}-${id}`
+        const id = $wrap.children('.dialog').length - 1
+        const detailName = $dialogOutput.attr('aria-controls')
+        const detailId = `${detailName}-${id}`
 
         $dialogOutput
             .attr('data-bs-target', `#${detailId}`)
@@ -54,9 +54,9 @@ $(document).ready(() => {
             .attr('id', detailId)
 
         // Set message
-        var header = message['header']
-        var contentName = header['content']
-        var content = message[contentName]
+        const header = message['header']
+        const contentName = header['content']
+        const content = message[contentName]
 
         if (mine)
             $dialogOutput
@@ -65,7 +65,7 @@ $(document).ready(() => {
             $dialogOutput
                 .text(content['dialog'])
 
-        var $messageWrap = $('<pre/>')
+        const $messageWrap = $('<pre/>')
             .text(JSON.stringify(message, null, 2))
 
         $dialogDetail.append($messageWrap)
@@ -77,47 +77,30 @@ $(document).ready(() => {
     }
 
 
-    var dialogNamespace = io('/dialog')
+    const planningNamespace = io('/planning')
 
-    $('#input-form').on('submit', (e) => {
-        e.preventDefault()
-
-        var data = $(e.currentTarget).serializeObject()
-        var header = data['header']
-        var contentName = header['content']
-        delete data['header']
-
-        var message = {
-            'header': header,
-            [contentName]: data
-        }
-
-        // Publish
-        dialogNamespace.emit('publish', {'data': JSON.stringify(message)})
-        submitMessage(message, true)
-    })
-
-    dialogNamespace.on('subscribe', (data) => {
-        var message = JSON.parse(data['data'])
+    planningNamespace.on('dialog_generation', (data) => {
+        const message = data['data']
 
         // Print message
-        submitMessage(message, false)
+        printDialog(message, true)
+    })
+
+
+    const dialogNamespace = io('/dialog')
+
+    dialogNamespace.on('subscribe', (data) => {
+        const message = data['data']
+
+        // Print message
+        printDialog(message, false)
 
         // Increase message ID
         $('#id').val((i, val) => { return ++val })
     })
 
 
-    var visionNamespace = io('/vision')
-
-    visionNamespace.on('face_id', (data) => {
-        var message = JSON.parse(data['data'])
-        var header = message['header']
-        var contentName = header['content']
-        var content = message[contentName]
-
-        console.log(message)
-    })
+    const visionNamespace = io('/vision')
 
     visionNamespace.on('image_raw', (data) => {
         const can = $('#face')[0]
@@ -132,9 +115,9 @@ $(document).ready(() => {
         var i = 4, j = 0
 
         while (j < inData.length) {
-            const w1 = inData.charCodeAt(j++)
-            const w2 = inData.charCodeAt(j++)
-            const w3 = inData.charCodeAt(j++)
+            let w1 = inData.charCodeAt(j++)
+            let w2 = inData.charCodeAt(j++)
+            let w3 = inData.charCodeAt(j++)
 
             if (!data.is_bigendian) {
                 rawData[i++] = w3 // blue
@@ -154,7 +137,7 @@ $(document).ready(() => {
     })
 
 
-    var speechNamespace = io('/speech')
+    const speechNamespace = io('/speech')
 
     $('#recorder-on').on('click', () => {
         speechNamespace.emit('record', {data: true})
@@ -164,15 +147,7 @@ $(document).ready(() => {
         speechNamespace.emit('record', {data: false})
     })
 
-    speechNamespace.on('stt', (data) => {
-        var message = JSON.parse(data['data'])
-        var header = message['header']
-        var contentName = header['content']
-        var content = message[contentName]
-        var human_speech = content['stt']
-
-        console.log(message)
-
-        $('#human_speech').val(human_speech)
+    $('#execute-test').on('click', () => {
+        speechNamespace.emit('test', {data: '머리가 좀 아프네.'})
     })
 })

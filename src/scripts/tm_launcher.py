@@ -4,7 +4,7 @@ import sys
 from os import path
 from flask_socketio import SocketIO
 from flask import Flask, render_template
-from rosbridge import DialogBridgeNamespace, VisionBridgeNamespace, SpeechBridgeNamespace
+from rosbridge import PlanningBridgeNamespace, DialogBridgeNamespace, VisionBridgeNamespace, SpeechBridgeNamespace
 from dtroslib.helpers import get_test_configuration, timestamp
 
 
@@ -15,6 +15,10 @@ app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 sio = SocketIO(app)
+
+sio.on_namespace(PlanningBridgeNamespace(host=ros_configuration['host'],
+                                         port=ros_configuration['port'],
+                                         namespace='/planning'))
 
 sio.on_namespace(DialogBridgeNamespace(host=ros_configuration['host'],
                                        port=ros_configuration['port'],
@@ -31,11 +35,7 @@ sio.on_namespace(SpeechBridgeNamespace(host=ros_configuration['host'],
 
 @app.route('/')
 def index():
-    args = {
-        'timestamp': timestamp()
-    }
-
-    return render_template('index.html', **args)
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
