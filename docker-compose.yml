@@ -1,12 +1,10 @@
 version: '2.2'
 
 services:
-    tm:
+    tm-default:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: container
-        network_mode: host
         environment:
             - PYTHONUNBUFFERED=1
         volumes:
@@ -15,6 +13,15 @@ services:
             - ./modules/KM/src:/workspace/src/km/src
             - ./modules/Vision/src:/workspace/src/vision/src
             - ./modules/Speech/src:/workspace/src/speech/src
+
+    tm-linux:
+        extends:
+            service: tm-default
+        network_mode: host
+
+    tm-linux-test:
+        extends:
+            service: tm-linux
         devices:
             - /dev/video0:/dev/video0
             - /dev/snd:/dev/snd
