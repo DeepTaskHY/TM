@@ -146,8 +146,4 @@ $(document).ready(() => {
     $('#recorder-off').on('click', () => {
         speechNamespace.emit('record', {data: false})
     })
-
-    $('#execute-test').on('click', () => {
-        speechNamespace.emit('test', {data: '머리가 좀 아프네.'})
-    })
 })

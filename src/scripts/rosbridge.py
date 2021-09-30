@@ -1,10 +1,9 @@
 import json
 from abc import *
+from dtroslib.helpers import timestamp
 from flask_socketio import Namespace
 from roslibpy import Ros, Topic, Message
 from typing import Any
-from dtroslib.helpers import timestamp
-import rospy
 
 
 class RosBridgeNamespace(Namespace, metaclass=ABCMeta):
@@ -137,28 +136,4 @@ class SpeechBridgeNamespace(DeepTaskBridgeNamespace):
     def on_record(self, data: dict):
         publisher = Topic(self.ros, '/action/recorder_on', 'std_msgs/Bool')
         message = Message(data)
-        publisher.publish(message)
-
-    def on_test(self, data: dict):
-        publisher = Topic(self.ros, '/recognition/speech', 'std_msgs/String')
-
-        human_speech = data['data']
-
-        data = {
-            'data': {
-                'header': {
-                    'source': 'stt',
-                    'target': ['planning'],
-                    'content': 'human_speech',
-                    'id': 1
-                },
-                'human_speech': {
-                    'stt': human_speech,
-                    'timestamp': timestamp()
-                }
-            }
-        }
-
-        rospy.loginfo(data)
-        message = Message(self.json_to_str(data))
         publisher.publish(message)
