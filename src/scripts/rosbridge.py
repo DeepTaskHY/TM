@@ -137,3 +137,28 @@ class SpeechBridgeNamespace(DeepTaskBridgeNamespace):
         publisher = Topic(self.ros, '/action/recorder_on', 'std_msgs/Bool')
         message = Message(data)
         publisher.publish(message)
+
+    def on_speech(self, data: dict):
+        publisher = Topic(self.ros, '/recognition/speech', 'std_msgs/String')
+
+        # Build message of speech
+        id = data['data']['id']
+        stt = data['data']['stt']
+
+        message = Message(self.json_to_str({
+            'data': {
+                'header': {
+                    'id': id,
+                    'timestamp': timestamp(),
+                    'source': 'stt',
+                    'target': ['planning'],
+                    'content': ['human_speech']
+                },
+                'human_speech': {
+                    'stt': stt
+                }
+            }
+        }))
+
+        # Publish speech to planning
+        publisher.publish(message)

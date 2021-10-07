@@ -17,6 +17,8 @@
     <div class="row">
         <!-- Input Layout -->
         <form class="col" id="input-form">
+            <input type="hidden" name="id" id="id" value="0"/>
+
             <div class="col mb-3">
                 <div class="form-floating">
                     <input type="text" class="form-control" name="intent" id="intent" readonly/>
@@ -33,7 +35,7 @@
 
             <div class="col mb-3">
                 <div class="form-floating">
-                    <input type="text" class="form-control" name="human_speech" id="human_speech" readonly/>
+                    <input type="text" class="form-control" name="human_speech" id="human_speech" required/>
                     <label for="human_speech">Speech</label>
                 </div>
             </div>
@@ -47,7 +49,7 @@
 
             <button type="button" class="btn btn-secondary" id="recorder-on">Recorder On</button>
             <button type="button" class="btn btn-secondary" id="recorder-off">Recorder Off</button>
-            <button type="button" class="btn btn-primary" id="execute-test">Test</button>
+            <button type="submit" class="btn btn-primary" id="execute-speech">Speech (without MIC)</button>
         </form>
 
         <!-- Output Layout -->
