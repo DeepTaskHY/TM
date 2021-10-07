@@ -119,14 +119,14 @@ class DialogBridgeNamespace(DeepTaskBridgeNamespace):
 class VisionBridgeNamespace(DeepTaskBridgeNamespace):
     def __init__(self, *args, **kwargs):
         super(VisionBridgeNamespace, self).__init__(*args, **kwargs)
-        self.register_image_raw()
+        self.register_image()
 
-    def register_image_raw(self):
-        subscriber = Topic(self.ros, '/recognition/image_raw', 'sensor_msgs/Image')
-        subscriber.subscribe(self.callback_image_raw)
+    def register_image(self):
+        subscriber = Topic(self.ros, '/recognition/image/compressed', 'sensor_msgs/CompressedImage')
+        subscriber.subscribe(self.callback_image)
 
-    def callback_image_raw(self, data: dict):
-        self.emit('image_raw', data)
+    def callback_image(self, data: dict):
+        self.emit('image', data)
 
 
 class SpeechBridgeNamespace(DeepTaskBridgeNamespace):

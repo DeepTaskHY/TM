@@ -99,37 +99,8 @@ $(document).ready(() => {
     }
 
 
-    const addBGR8toCanvas = (canvas, bgr8) => {
-        canvas.width = bgr8.width
-        canvas.height = bgr8.height
-
-        const ctx = canvas.getContext('2d')
-        const imgData = ctx.createImageData(bgr8.width, bgr8.height)
-        const inData = atob(bgr8.data)
-        const rawData = imgData.data
-
-        var i = 4, j = 0
-
-        while (j < inData.length) {
-            let w1 = inData.charCodeAt(j++)
-            let w2 = inData.charCodeAt(j++)
-            let w3 = inData.charCodeAt(j++)
-
-            if (!bgr8.is_bigendian) {
-                rawData[i++] = w3  // blue
-                rawData[i++] = w2  // green
-                rawData[i++] = w1  // red
-            }
-            else {
-                rawData[i++] = (w1 >> 8) + ((w1 & 0xFF) << 8)
-                rawData[i++] = (w2 >> 8) + ((w2 & 0xFF) << 8)
-                rawData[i++] = (w3 >> 8) + ((w3 & 0xFF) << 8)
-            }
-
-            rawData[i++] = 255  // alpha
-        }
-
-        ctx.putImageData(imgData, 0, 0)
+    const getCompressedImage = (data) => {
+        return `data:image/${data['format']};base64,${data['data']}`
     }
 
 
@@ -158,9 +129,8 @@ $(document).ready(() => {
 
     const visionNamespace = io('/vision')
 
-    visionNamespace.on('image_raw', (data) => {
-        const canvas = $('#face')[0]
-        addBGR8toCanvas(canvas, data)
+    visionNamespace.on('image', (data) => {
+        $('#face').attr('src', getCompressedImage(data))
     })
 
 
