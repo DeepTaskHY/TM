@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+#social_context {
+    height: 400px;
+}
+
 #face {
     min-height: 300px;
 }
