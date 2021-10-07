@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find tm)/launch/tm_modules.launch"/>
+    <include file="$(find dm_generator)/launch/dm_$(env DM_NODE).launch"/>
+    <include file="$(find tm)/launch/tm_nodes.launch"/>
+</launch>

@@ -7,6 +7,7 @@ services:
             dockerfile: Dockerfile
         environment:
             - PYTHONUNBUFFERED=1
+            - DM_NODE=homecare
         volumes:
             - ./src:/workspace/src/tm/src
             - ./modules/DM_Generator/src:/workspace/src/dm_generator/src

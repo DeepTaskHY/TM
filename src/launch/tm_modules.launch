@@ -1,8 +1,6 @@
 <launch>
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
-    <include file="$(find dm_generator)/launch/dm_homecare.launch"/>
     <include file="$(find km)/launch/km_launcher.launch"/>
     <include file="$(find vision)/launch/vision_launcher.launch"/>
     <include file="$(find speech)/launch/speech_launcher.launch"/>
-    <include file="$(find tm)/launch/tm_node.launch"/>
 </launch>
