@@ -3,6 +3,7 @@
 <head>
     <!-- CSS -->
     <link href="//cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"/>
+    <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet"/>
     <!-- JS -->
     <script src="//code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-serialize-object/2.5.0/jquery.serialize-object.min.js" integrity="sha512-Gn0tSSjkIGAkaZQWjx3Ctl/0dVJuTmjW/f9QyB302kFjU4uTNP4HtA32U2qXs/TRlEsK5CoEqMEMs7LnzLOBsA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -51,9 +52,9 @@
 
         <!-- Output Layout -->
         <div class="col">
-            <canvas class="container-fluid rounded bg-secondary" style="min-height: 300px" id="face"></canvas>
+            <canvas class="container-fluid rounded bg-secondary" id="face"></canvas>
 
-            <div class="bg-light border border-secondary rounded-3 overflow-auto" style="height: 400px" id="dialog-wrap">
+            <div class="bg-light border border-secondary rounded-3 overflow-auto" id="dialog-wrap">
                 <div class="p-2 visually-hidden dialog dialog-example">
                     <p class="d-flex dialog-output">
                         <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#dialog-detail" aria-expanded="false" aria-controls="dialog-detail"></button>

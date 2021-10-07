@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+#face {
+    min-height: 300px;
+}
+
+#dialog-wrap {
+    height: 400px;
+}
