@@ -153,7 +153,7 @@ def pm_msg_generator(id, targets, content_names, contents):
     json_msg = {
         'header': {
             'timestamp': str(time.time()),
-            'source': 'plannig',
+            'source': 'planning',
             'target': targets,
             'content': content_names,
             'id': id,
