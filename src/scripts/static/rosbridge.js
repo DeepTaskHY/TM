@@ -6,7 +6,6 @@ $(document).ready(() => {
         // Get jQuery objects
         const $id = $('#id')
         const $intent = $('#intent')
-        const $name = $('#name')
         const $human_speech = $('#human_speech')
         const $sc = $('#social_context')
 
@@ -19,7 +18,6 @@ $(document).ready(() => {
         // Set message details
         $id.val(header['id'])
         $intent.val(content['intent'])
-        $name.val(content['name'])
         $human_speech.val(content['human_speech'])
         $sc.val(sc)
     }
