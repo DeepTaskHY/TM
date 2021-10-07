@@ -5,8 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Update repo packages
 RUN apt-get update --fix-missing && \
-    apt-get install -y apt-utils && \
-    apt-get upgrade -y
+    apt-get install -y apt-utils
 
 # Install python
 RUN ln -s /usr/bin/python3 /usr/bin/python
