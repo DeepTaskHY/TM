@@ -144,8 +144,14 @@ class SpeechBridgeNamespace(DeepTaskBridgeNamespace):
         # Build message of speech
         id = data['data']['id']
         stt = data['data']['stt']
+        message = Message(self.json_to_str(self.build_speech_message(id, stt)))
 
-        message = Message(self.json_to_str({
+        # Publish speech to planning
+        publisher.publish(message)
+
+    @classmethod
+    def build_speech_message(cls, id: int, stt: str) -> dict:
+        message = {
             'data': {
                 'header': {
                     'id': id,
@@ -158,7 +164,6 @@ class SpeechBridgeNamespace(DeepTaskBridgeNamespace):
                     'stt': stt
                 }
             }
-        }))
+        }
 
-        # Publish speech to planning
-        publisher.publish(message)
+        return message
