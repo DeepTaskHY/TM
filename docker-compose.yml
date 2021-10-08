@@ -14,6 +14,7 @@ services:
             - ./modules/KM/src:/workspace/src/km/src
             - ./modules/Vision/src:/workspace/src/vision/src
             - ./modules/Speech/src:/workspace/src/speech/src
+            - /etc/localtime:/etc/localtime
 
     tm-linux:
         extends:
