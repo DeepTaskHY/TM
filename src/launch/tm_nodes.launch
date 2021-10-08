@@ -1,4 +1,0 @@
-<launch>
-    <node pkg="tm" name="PM_node" type="pm_launcher.py" output="screen"/>
-    <node pkg="tm" name="TM_node" type="tm_launcher.py" output="screen"/>
-</launch>
