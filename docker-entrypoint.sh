@@ -10,13 +10,13 @@ echo "source \"/opt/ros/$ROS_DISTRO/setup.sh\"" >> /etc/bash.bashrc
 echo "source /workspace/devel/setup.sh" >> /etc/bash.bashrc
 
 # Setup executable files
-chmod +x src/tm/src/scripts/tm_launcher.py \
-         src/tm/src/scripts/pm_launcher.py \
-         src/dm_generator/src/scripts/launcher.py \
-         src/km/src/scripts/launcher.py \
-         src/vision/src/scripts/launcher.py \
-         src/speech/src/scripts/stt_launcher.py \
-         src/speech/src/scripts/tts_launcher.py
+chmod +x src/tm/scripts/tm_launcher.py \
+         src/tm/scripts/pm_launcher.py \
+         src/dm_generator/scripts/launcher.py \
+         src/km/scripts/launcher.py \
+         src/vision/scripts/launcher.py \
+         src/speech/scripts/stt_launcher.py \
+         src/speech/scripts/tts_launcher.py
 
 # Execute CMD
 exec "$@"
