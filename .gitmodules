@@ -14,3 +14,6 @@
 	path = modules/Speech
 	url = https://github.com/DeepTaskHY/Speech
 	branch = main
+[submodule "modules/dummyTM"]
+	path = modules/dummyTM
+	url = https://github.com/DeepTaskHY/dummyTM
