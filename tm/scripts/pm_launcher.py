@@ -16,13 +16,13 @@ _intent: str
 _sc: dict
 _sc_ready: bool = False
 _dialog_exec_done = True
-_faceID: str = "Unknown"
+_faceID: str = 'Unknown'
 
 
 def callback_vision(message):
     global _faceID
     received_message = json.loads(message.data)
-    # rospy.loginfo('Received message: \n{}'.format(json.dumps(message, ensure_ascii=False, indent="\t")))
+    # rospy.loginfo('Received message: \n{}'.format(json.dumps(message, ensure_ascii=False, indent='\t')))
 
     header = received_message['header']
 
@@ -38,7 +38,7 @@ def callback_vision(message):
             msg['knowledge_query']['data'][0]['timestamp'] = t_point
 
             pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
-            rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
+            rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent='\t')))
         except ValueError:
             pass
 
@@ -50,7 +50,7 @@ def callback_speech(message):
 
     received_message = json.loads(message.data)
     # print(received_message)
-    rospy.loginfo('Received message: \n{}'.format(json.dumps(received_message, ensure_ascii=False, indent="\t")))
+    rospy.loginfo('Received message: \n{}'.format(json.dumps(received_message, ensure_ascii=False, indent='\t')))
 
     header = received_message['header']
     _human_speech = received_message['human_speech']['stt']
@@ -65,7 +65,7 @@ def callback_speech(message):
         msg = json.load(open(json_file, 'r'))
 
         pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
-        rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
+        rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent='\t')))
 
     elif '아까' in _human_speech and '약' in _human_speech and '아직도' in _human_speech:
         _dialog_exec_done = False
@@ -88,7 +88,7 @@ def callback_task(message):
     if 'planning' not in header['target']:
         return
 
-    rospy.loginfo('Received message: \n{}'.format(json.dumps(received_message, ensure_ascii=False, indent="\t")))
+    rospy.loginfo('Received message: \n{}'.format(json.dumps(received_message, ensure_ascii=False, indent='\t')))
 
     if source == 'knowledge':
         if 'knowledge_query' in header['content']:
@@ -108,7 +108,7 @@ def callback_task(message):
         msg = pm_msg_generator(dm_id, tar, con_name, con)
         print(msg)
         pm_node.publish('/action/speech', json.dumps(msg, ensure_ascii=False, indent='\t'))
-        rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
+        rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent='\t')))
 
         return
 
@@ -129,7 +129,7 @@ def dialog_exec():
                 msg['dialog_generation']['social_context'] = _sc
 
                 pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
-                rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
+                rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent='\t')))
 
                 _dialog_exec_done = True
 
@@ -141,7 +141,7 @@ def dialog_exec():
                 msg['dialog_generation']['social_context'] = _sc
 
                 pm_node.publish('/taskExecution', json.dumps(msg, ensure_ascii=False, indent='\t'))
-                rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent="\t")))
+                rospy.loginfo('Published message: \n{}'.format(json.dumps(msg, ensure_ascii=False, indent='\t')))
 
                 _dialog_exec_done = True
 
@@ -169,11 +169,11 @@ def pm_msg_generator(id, targets, content_names, contents):
 if __name__ == '__main__':
     pm_node = NodeBase('pm_node')
 
-    pm_node.add_publisher("/taskExecution", String, queue_size=10)
-    pm_node.add_publisher("/action/speech", String, queue_size=10)
-    pm_node.add_subscriber("/recognition/speech", String, callback_speech)
-    pm_node.add_subscriber("/recognition/face_id", String, callback_vision)
-    pm_node.add_subscriber("/taskCompletion", String, callback_task)
+    pm_node.add_publisher('/taskExecution', String, queue_size=10)
+    pm_node.add_publisher('/action/speech', String, queue_size=10)
+    pm_node.add_subscriber('/recognition/speech', String, callback_speech)
+    pm_node.add_subscriber('/recognition/face_id', String, callback_vision)
+    pm_node.add_subscriber('/taskCompletion', String, callback_task)
 
     t = threading.Thread(target=dialog_exec)
     t.start()
