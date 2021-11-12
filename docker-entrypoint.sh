@@ -13,6 +13,7 @@ echo "source /workspace/devel/setup.sh" >> /etc/bash.bashrc
 chmod +x src/tm/scripts/tm_launcher.py \
          src/tm/scripts/pm_launcher.py \
          src/dm_generator/scripts/launcher.py \
+         src/dm_intent/scripts/launcher.py \
          src/km/scripts/launcher.py \
          src/vision/scripts/launcher.py \
          src/speech/scripts/stt_launcher.py \

@@ -17,3 +17,6 @@
 [submodule "modules/dummyTM"]
 	path = modules/dummyTM
 	url = https://github.com/DeepTaskHY/dummyTM
+[submodule "modules/DM_Intent"]
+	path = modules/DM_Intent
+	url = https://github.com/DeepTaskHY/DM_Intent_2

@@ -1,5 +1,7 @@
 <launch>
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+    <include file="$(find dm_generator)/launch/dm_launcher.launch"/>
+    <include file="$(find dm_intent)/launch/dm_intent_launcher.launch"/>
     <include file="$(find km)/launch/km_launcher.launch"/>
     <include file="$(find vision)/launch/vision_launcher.launch"/>
     <include file="$(find speech)/launch/speech_launcher.launch"/>

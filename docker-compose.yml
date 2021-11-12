@@ -11,6 +11,7 @@ services:
         volumes:
             - ./tm:/workspace/src/tm
             - ./modules/DM_Generator/dm_generator:/workspace/src/dm_generator
+            - ./modules/DM_Intent/dm_intent:/workspace/src/dm_intent
             - ./modules/KM/km:/workspace/src/km
             - ./modules/Vision/vision:/workspace/src/vision
             - ./modules/Speech/speech:/workspace/src/speech

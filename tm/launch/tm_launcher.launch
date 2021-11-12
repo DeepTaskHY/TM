@@ -1,6 +1,5 @@
 <launch>
     <include file="$(find tm)/launch/tm_modules.launch"/>
-    <include file="$(find dm_generator)/launch/dm_launcher.launch"/>
     <node pkg="tm" name="PM_node" type="pm_launcher.py" output="screen"/>
     <node pkg="tm" name="TM_node" type="tm_launcher.py" output="screen"/>
 </launch>
