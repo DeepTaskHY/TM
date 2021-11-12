@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
-from os import path
-from flask_socketio import SocketIO
-from flask import Flask, render_template
-from rosbridge import PlanningBridgeNamespace, DialogBridgeNamespace, VisionBridgeNamespace, SpeechBridgeNamespace
 from dtroslib.helpers import get_test_configuration, timestamp
+from flask import Flask, render_template
+from flask_socketio import SocketIO
+from os import path
 
+from rosbridge import PlanningBridgeNamespace, DialogBridgeNamespace, VisionBridgeNamespace, SpeechBridgeNamespace
 
 flask_configuration = get_test_configuration('tm', 'flask')
 ros_configuration = get_test_configuration('tm', 'ros')
