@@ -43,6 +43,7 @@ RUN apt-get -y install libsndfile1 \
 WORKDIR /workspace
 ADD requirements.txt requirements-tm.txt
 ADD modules/DM_Generator/requirements.txt requirements-dm.txt
+ADD modules/DM_Intent/requirements.txt requirements-dm_intent.txt
 ADD modules/KM/requirements.txt requirements-km.txt
 ADD modules/Vision/requirements.txt requirements-vision.txt
 ADD modules/Speech/requirements.txt requirements-speech.txt
