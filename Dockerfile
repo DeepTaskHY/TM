@@ -42,6 +42,7 @@ RUN apt-get -y install libsndfile1 \
 # Install require dependencies
 WORKDIR /workspace
 ADD requirements.txt requirements-tm.txt
+# ADD modules/PM/requirements.txt requirements-pm.txt
 ADD modules/DM_Generator/requirements.txt requirements-dm.txt
 ADD modules/DM_Intent/requirements.txt requirements-dm_intent.txt
 ADD modules/KM/requirements.txt requirements-km.txt

@@ -10,6 +10,7 @@ services:
             - scenario_name=homecare
         volumes:
             - ./tm:/workspace/src/tm
+            - ./modules/PM/dummy_tm:/workspace/src/dummy_tm
             - ./modules/DM_Generator/dm_generator:/workspace/src/dm_generator
             - ./modules/DM_Intent/dm_intent:/workspace/src/dm_intent
             - ./modules/KM/km:/workspace/src/km

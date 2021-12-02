@@ -10,8 +10,8 @@ echo "source \"/opt/ros/$ROS_DISTRO/setup.sh\"" >> /etc/bash.bashrc
 echo "source /workspace/devel/setup.sh" >> /etc/bash.bashrc
 
 # Setup executable files
-chmod +x src/tm/scripts/tm_launcher.py \
-         src/tm/scripts/pm_launcher.py \
+chmod +x src/tm/scripts/launcher.py \
+         src/dummy_tm/scripts/launcher.py \
          src/dm_generator/scripts/launcher.py \
          src/dm_intent/scripts/launcher.py \
          src/km/scripts/launcher.py \
