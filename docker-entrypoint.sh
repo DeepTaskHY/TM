@@ -23,5 +23,9 @@ chmod +x src/tm/scripts/launcher.py \
 # Download model checkpoints (for modules/DM_Intent)
 ./src/dm_intent/model_download_checkFile.sh
 
+# Copy configuration examples
+echo "n" | cp -i src/dm_generator/configuration.json.example src/dm_generator/configuration.json
+echo "n" | cp -i src/dm_intent/configuration.json.example src/dm_intent/configuration.json
+
 # Execute CMD
 exec "$@"
