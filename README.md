@@ -25,6 +25,12 @@ This module contains submodules. When using this module, all submodules must be 
 git clone --recursive https://github.com/DeepTaskHY/TM
 ```
 
+When the submodule is updated, use the following command.
+
+```shell
+git submodule update --remote
+```
+
 ### 4.2 Setup the module
 
 There are submodules that require configuration. Environment setting is required for each submodule.
