@@ -20,7 +20,7 @@ class RosBridgeNamespace(Namespace, metaclass=ABCMeta):
     def ros(self) -> Ros:
         if not self.__ros:
             self.__ros = Ros(host=self.__ros_host, port=self.__ros_port)
-            self.__ros.run()
+            self.__ros.run(timeout=30)
 
         return self.__ros
 
