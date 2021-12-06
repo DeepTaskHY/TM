@@ -24,6 +24,7 @@ chmod +x src/tm/scripts/launcher.py \
 ./src/dm_intent/model_download_checkFile.sh
 
 # Copy configuration examples
+echo "n" | cp -i src/tm/configuration.json.example src/tm/configuration.json
 echo "n" | cp -i src/dm_generator/configuration.json.example src/dm_generator/configuration.json
 echo "n" | cp -i src/dm_intent/configuration.json.example src/dm_intent/configuration.json
 
