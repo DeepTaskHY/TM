@@ -5,31 +5,38 @@ from dtroslib.helpers import get_test_configuration, timestamp
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 from os import path
+from roslibpy import Ros
 
 from rosbridge import PlanningBridgeNamespace, DialogBridgeNamespace, VisionBridgeNamespace, SpeechBridgeNamespace
+
 
 flask_configuration = get_test_configuration('tm', 'flask')
 ros_configuration = get_test_configuration('tm', 'ros')
 
+# Flask
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+# ROS
+ros = Ros(host=ros_configuration['host'],
+          port=ros_configuration['port'])
+
+while not ros.is_connected:
+    ros.run()
+
+# Rosbridge WebSocket
 sio = SocketIO(app)
 
-sio.on_namespace(PlanningBridgeNamespace(host=ros_configuration['host'],
-                                         port=ros_configuration['port'],
+sio.on_namespace(PlanningBridgeNamespace(client=ros,
                                          namespace='/planning'))
 
-sio.on_namespace(DialogBridgeNamespace(host=ros_configuration['host'],
-                                       port=ros_configuration['port'],
+sio.on_namespace(DialogBridgeNamespace(client=ros,
                                        namespace='/dialog'))
 
-sio.on_namespace(VisionBridgeNamespace(host=ros_configuration['host'],
-                                       port=ros_configuration['port'],
+sio.on_namespace(VisionBridgeNamespace(client=ros,
                                        namespace='/vision'))
 
-sio.on_namespace(SpeechBridgeNamespace(host=ros_configuration['host'],
-                                       port=ros_configuration['port'],
+sio.on_namespace(SpeechBridgeNamespace(client=ros,
                                        namespace='/speech'))
 
 

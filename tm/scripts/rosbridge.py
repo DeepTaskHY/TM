@@ -7,22 +7,15 @@ from typing import Any
 
 
 class RosBridgeNamespace(Namespace, metaclass=ABCMeta):
-    __ros: Ros = None
-    __ros_host: str = None
-    __ros_port: int = None
+    __client: Ros = None
 
-    def __init__(self, host: str, port: int, *args, **kwargs):
+    def __init__(self, client: Ros, *args, **kwargs):
         super(RosBridgeNamespace, self).__init__(*args, **kwargs)
-        self.__ros_host = host
-        self.__ros_port = port
+        self.__client = client
 
     @property
-    def ros(self) -> Ros:
-        if not self.__ros:
-            self.__ros = Ros(host=self.__ros_host, port=self.__ros_port)
-            self.__ros.run(timeout=30)
-
-        return self.__ros
+    def client(self) -> Ros:
+        return self.__client
 
 
 class DeepTaskBridgeNamespace(RosBridgeNamespace, metaclass=ABCMeta):
@@ -78,7 +71,7 @@ class PlanningBridgeNamespace(DeepTaskBridgeNamespace):
         self.register_dialog_generation()
 
     def register_dialog_generation(self):
-        subscriber = Topic(self.ros, '/taskExecution', 'std_msgs/String')
+        subscriber = Topic(self.client, '/taskExecution', 'std_msgs/String')
         subscriber.subscribe(self.callback_dialog_generation)
 
     def callback_dialog_generation(self, data: dict):
@@ -99,12 +92,12 @@ class DialogBridgeNamespace(DeepTaskBridgeNamespace):
         if not self.message_target_equal(data, 'dialog', 'dialog_generation'):
             return
 
-        publisher = Topic(self.ros, '/taskExecution', 'std_msgs/String')
+        publisher = Topic(self.client, '/taskExecution', 'std_msgs/String')
         message = Message(self.json_to_str(data))
         publisher.publish(message)
 
     def register_subscribe(self):
-        subscriber = Topic(self.ros, '/taskCompletion', 'std_msgs/String')
+        subscriber = Topic(self.client, '/taskCompletion', 'std_msgs/String')
         subscriber.subscribe(self.callback_subscribe)
 
     def callback_subscribe(self, data: dict):
@@ -122,7 +115,7 @@ class VisionBridgeNamespace(DeepTaskBridgeNamespace):
         self.register_image()
 
     def register_image(self):
-        subscriber = Topic(self.ros, '/recognition/image/compressed', 'sensor_msgs/CompressedImage')
+        subscriber = Topic(self.client, '/recognition/image/compressed', 'sensor_msgs/CompressedImage')
         subscriber.subscribe(self.callback_image)
 
     def callback_image(self, data: dict):
@@ -134,12 +127,12 @@ class SpeechBridgeNamespace(DeepTaskBridgeNamespace):
         super(SpeechBridgeNamespace, self).__init__(*args, **kwargs)
 
     def on_record(self, data: dict):
-        publisher = Topic(self.ros, '/action/recorder_on', 'std_msgs/Bool')
+        publisher = Topic(self.client, '/action/recorder_on', 'std_msgs/Bool')
         message = Message(data)
         publisher.publish(message)
 
     def on_speech(self, data: dict):
-        publisher = Topic(self.ros, '/recognition/speech', 'std_msgs/String')
+        publisher = Topic(self.client, '/recognition/speech', 'std_msgs/String')
 
         # Build message of speech
         id = data['data']['id']
