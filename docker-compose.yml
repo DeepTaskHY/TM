@@ -2,12 +2,14 @@ version: '2.2'
 
 services:
     tm-default:
+        privileged: true
         build:
             context: .
             dockerfile: Dockerfile
         environment:
             - PYTHONUNBUFFERED=1
-            - scenario_name=homecare
+            - CANEMRA_INDEX=${CAMERA_INDEX}
+            - SCENARIO_NAME=homecare
         volumes:
             - ./tm:/workspace/src/tm
             - ./modules/PM/dummy_tm:/workspace/src/dummy_tm
@@ -22,10 +24,3 @@ services:
         extends:
             service: tm-default
         network_mode: host
-
-    tm-linux-test:
-        extends:
-            service: tm-linux
-        devices:
-            - /dev/video0:/dev/video0
-            - /dev/snd:/dev/snd
