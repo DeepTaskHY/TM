@@ -39,17 +39,22 @@ RUN apt-get -y install libgstreamer1.0-dev \
 RUN apt-get -y install libsndfile1 \
                        libportaudio2
 
-# Install require dependencies
 WORKDIR /workspace
+
+# Install require dependencies
 ADD requirements.txt requirements-tm.txt
-# ADD modules/PM/requirements.txt requirements-pm.txt
 ADD modules/DM_Generator/requirements.txt requirements-dm.txt
 ADD modules/DM_Intent/requirements.txt requirements-dm_intent.txt
 ADD modules/KM/requirements.txt requirements-km.txt
 ADD modules/Vision/requirements.txt requirements-vision.txt
 ADD modules/Speech/requirements.txt requirements-speech.txt
-RUN ls requirements-*.txt | xargs paste -sd'\n' > requirements.txt
-RUN pip install -r requirements.txt
+
+RUN pip install -r requirements-tm.txt
+RUN pip install -r requirements-dm.txt
+RUN pip install -r requirements-dm_intent.txt
+RUN pip install -r requirements-km.txt
+RUN pip install -r requirements-vision.txt
+RUN pip install -r requirements-speech.txt
 
 # Install ROS packages (for ROS WebSocket)
 RUN apt-get install -y ros-noetic-rosbridge-suite
