@@ -136,3 +136,6 @@ dmypy.json
 
 # Keep the folder by keeping .gitkeep
 !/**/.gitkeep
+
+# Ignore example files
+!.env.example

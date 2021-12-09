@@ -22,13 +22,13 @@ This module is for demonstration at Hanyang University.
 This module contains submodules. When using this module, all submodules must be checked out.
 
 ```shell
-git clone --recursive https://github.com/DeepTaskHY/TM
+$ git clone --recursive https://github.com/DeepTaskHY/TM
 ```
 
 When the submodule is updated, use the following command.
 
 ```shell
-git submodule update --remote
+$ git submodule update --remote
 ```
 
 ### 4.2 Setup the module
@@ -58,3 +58,10 @@ This submodule does not require any configuration.
 #### 4.2.6 [Speech](modules/Speech)
 
 This submodule does not require any configuration.
+
+### 4.3. Start the module
+
+```shell
+$ docker-compose --env-file=.env up tm-default  # or
+$ docker-compose --env-file=.env up tm-linux  # or
+```

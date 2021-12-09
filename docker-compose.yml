@@ -9,7 +9,7 @@ services:
         environment:
             - PYTHONUNBUFFERED=1
             - CANEMRA_INDEX=${CAMERA_INDEX}
-            - SCENARIO_NAME=homecare
+            - SCENARIO_NAME=${SCENARIO_NAME}
         volumes:
             - ./tm:/workspace/src/tm
             - ./modules/PM/dummy_tm:/workspace/src/dummy_tm
