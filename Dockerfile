@@ -16,7 +16,8 @@ RUN pip install --upgrade pip && \
 
 # Install OS packages (for modules/Vision)
 RUN apt-get -y install libgirepository1.0-dev \
-                       libcairo2-dev
+                       libcairo2-dev \
+                       v4l-utils
 
 # Install OS packages (for modules/Speech)
 RUN apt-get -y install libgstreamer1.0-dev \

@@ -8,6 +8,7 @@ services:
             dockerfile: Dockerfile
         environment:
             - PYTHONUNBUFFERED=1
+            - MIC_INDEX=${MIC_INDEX}
             - CANEMRA_INDEX=${CAMERA_INDEX}
             - SCENARIO_NAME=${SCENARIO_NAME}
         volumes:

@@ -53,15 +53,34 @@ This submodule does not require any configuration.
 
 #### 4.2.5 [Vision](modules/Vision)
 
-This submodule does not require any configuration.
+This submodule should set the index of the camera device to be connected. Check the camera list using the following command.
+
+```shell
+$ sudo apt install v4l-utils
+$ v4l2-ctl --list-devices
+```
 
 #### 4.2.6 [Speech](modules/Speech)
 
-This submodule does not require any configuration.
+This submodule needs to set the index of the microphone device to be connected. Check the list of microphones using the following command.
+
+```shell
+sudo apt install libportaudio2
+python -m sounddevice
+```
 
 ### 4.3. Start the module
 
+This module supports `docker-compose`. You can run it using the following command.
+
 ```shell
 $ docker-compose --env-file=.env up tm-default  # or
-$ docker-compose --env-file=.env up tm-linux  # or
+$ docker-compose --env-file=.env up tm-linux
+```
+
+You can configure the execution environment by editing the [environment file](.env).
+
+```shell
+$ cp .env.example .env
+$ vi .env
 ```

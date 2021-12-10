@@ -28,5 +28,9 @@ echo "n" | cp -i src/tm/configuration.json.example src/tm/configuration.json
 echo "n" | cp -i src/dm_generator/configuration.json.example src/dm_generator/configuration.json
 echo "n" | cp -i src/dm_intent/configuration.json.example src/dm_intent/configuration.json
 
+# Print device list
+echo "Camera device list" && v4l2-ctl --list-devices
+echo "Microphone device list" && python3 -m sounddevice
+
 # Execute CMD
 exec "$@"
