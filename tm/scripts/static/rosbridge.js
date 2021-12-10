@@ -24,6 +24,14 @@ $(document).ready(() => {
 
 
     const printDialog = (message = {}, mine = true) => {
+        // Set message
+        const header = message['header']
+        const contentName = header['content']
+        const content = message[contentName]
+
+        if (!content[mine && 'human_speech' || 'dialog'])
+            return null
+
         console.log(message)
 
         const $wrap = $('#dialog-wrap')
@@ -74,11 +82,6 @@ $(document).ready(() => {
 
         $dialogDetailWrap
             .attr('id', detailId)
-
-        // Set message
-        const header = message['header']
-        const contentName = header['content']
-        const content = message[contentName]
 
         if (mine)
             $dialogOutput
