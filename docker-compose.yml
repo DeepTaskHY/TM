@@ -2,15 +2,13 @@ version: '2.2'
 
 services:
     tm-default:
-        privileged: true
         build:
             context: .
             dockerfile: Dockerfile
+        privileged: true
+        env_file: .env
         environment:
             - PYTHONUNBUFFERED=1
-            - MIC_INDEX=${MIC_INDEX}
-            - CANEMRA_INDEX=${CAMERA_INDEX}
-            - SCENARIO_NAME=${SCENARIO_NAME}
         volumes:
             - ./tm:/workspace/src/tm
             - ./modules/PM/dummy_tm:/workspace/src/dummy_tm
