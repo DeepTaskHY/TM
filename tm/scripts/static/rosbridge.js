@@ -55,6 +55,8 @@ $(document).ready(() => {
         const $dialogDetail = $dialogDetailWrap
             .children('.card')
 
+        const $humanSpeech = $('#human_speech')
+
         // Set class style
         if (mine) {
             $dialogOutputWrap
@@ -83,9 +85,13 @@ $(document).ready(() => {
         $dialogDetailWrap
             .attr('id', detailId)
 
-        if (mine)
+        if (mine) {
+            $humanSpeech
+                .val('')
+
             $dialogOutput
                 .text(content['human_speech'])
+        }
         else
             $dialogOutput
                 .text(content['dialog'])
