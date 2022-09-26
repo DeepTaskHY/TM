@@ -5,7 +5,7 @@
 This module is for demonstration at Hanyang University.
 
 - 2.1 Maintainer status: maintained
-- 2.2 Maintainer: Eunsoo Lee ([eunsoogi@hanyang.ac.kr]())
+- 2.2 Maintainer: Eunsoo Lee ([eunsoogi@hanyang.ac.kr]()), Gunhee Cho ([freebeinq@gmail.com]())
 - 2.3 Author: Eunsoo Lee ([eunsoogi@hanyang.ac.kr]())
 - 2.4 License (optional): 
 - 2.5 Source git: https://github.com/DeepTaskHY/TM
